@@ -1,15 +1,31 @@
 import express from 'express';
+import session from 'express-session';
 import dotenv from 'dotenv';
-import ticketmasterRoutes from './routes/ticketmasterRoutes';
+import ticketmasterRouter from './routes/ticketmasterRoutes';
+import calendarRoutes from './routes/calendarRoutes';
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use('/api/ticketmaster', ticketmasterRoutes);
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || 'super-secret-session-key',
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+app.use('/api/ticketmaster', ticketmasterRouter);
+app.use('/api/calendar', calendarRoutes);
+
+app.use((req, res) => {
+  res.status(404).send(`Cannot ${req.method} ${req.originalUrl}`);
+});
 
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
