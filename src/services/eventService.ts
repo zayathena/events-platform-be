@@ -8,9 +8,15 @@ export function getAllEvents() {
 
 export function signUpForEvent(userId: number, eventId: number) {
   return db.query(
-    'INSERT INTO signups (user_id, event_id) VALUES ($1, $2) ON CONFLICT DO NOTHING',
+    'INSERT INTO signups (user_id, event_id) VALUES ($1, $2) ON CONFLICT DO NOTHING RETURNING *',
     [userId, eventId]
-  );
+  )
+  .then((res: QueryResult) => {
+    if (res.rows.length === 0) {
+      return Promise.reject(new Error('User already signed up for this event.'));
+    }
+    return res.rows[0];
+  });
 }
 
 export function createEvent(
