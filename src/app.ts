@@ -3,6 +3,7 @@ import session from 'express-session';
 import dotenv from 'dotenv';
 import ticketmasterRouter from './routes/ticketmasterRoutes';
 import calendarRoutes from './routes/calendarRoutes';
+import eventRoutes from '../src/routes/eventRoutes';
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.use(
 
 app.use('/api/ticketmaster', ticketmasterRouter);
 app.use('/api/calendar', calendarRoutes);
+app.use('/api/events', eventRoutes);
 
 app.use((req, res) => {
   res.status(404).send(`Cannot ${req.method} ${req.originalUrl}`);
