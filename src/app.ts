@@ -1,5 +1,7 @@
 import express from 'express';
 import session from 'express-session';
+import db from './config/db';
+import PgSession from 'connect-pg-simple';
 import dotenv from 'dotenv';
 import ticketmasterRouter from './routes/ticketmasterRoutes';
 import calendarRoutes from './routes/calendarRoutes';
@@ -12,11 +14,23 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
+const pgSessionStore = new PgSession({
+  pool: db,
+  tableName: 'user_sessions',
+  createTableIfMissing: true,
+});
+
 app.use(
   session({
+    store: pgSessionStore,
     secret: process.env.SESSION_SECRET || 'super-secret-session-key',
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      secure: process.env.NODE_ENV === 'production',
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24,
+    },
   })
 );
 
