@@ -1,14 +1,16 @@
 import { Request, Response } from 'express';
 import axios from 'axios';
 
-export const getEvents = (req: Request, res: Response) => {
+export const getLiverpoolEvents = (req: Request, res: Response) => {
   const apiKey = process.env.TICKETMASTER_API_KEY;
   const city = 'Liverpool';
+  const countryCode = 'GB';
 
   axios.get('https://app.ticketmaster.com/discovery/v2/events.json', {
     params: {
       apikey: apiKey,
-      city: city,
+      city,
+      countryCode,
       size: 10,
     },
   })
@@ -16,7 +18,7 @@ export const getEvents = (req: Request, res: Response) => {
     const events = response.data._embedded?.events || [];
 
     res.json({
-      message: 'Events fetched from Ticketmaster',
+      message: 'Liverpool events fetched',
       events: events.map((event: any) => ({
         id: event.id,
         name: event.name,
@@ -27,7 +29,7 @@ export const getEvents = (req: Request, res: Response) => {
     });
   })
   .catch(error => {
-    console.error('Error fetching Ticketmaster events:', error);
-    res.status(500).json({ error: 'Failed to fetch events' });
+    console.error('Ticketmaster API Error:', error.response?.data || error.message);
+    res.status(500).json({ error: 'Failed to fetch events from Ticketmaster' });
   });
 };
