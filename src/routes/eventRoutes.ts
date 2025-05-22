@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/events/:id', (req, res) => {
+router.get('/:id', (req, res) => {
   const eventId = parseInt(req.params.id, 10);
 
   getEventById(eventId)
@@ -29,7 +29,6 @@ router.get('/events/:id', (req, res) => {
 
 router.get('/users/:userId/signups', (req, res) => {
   const userId = parseInt(req.params.userId, 10);
-
   getUserSignups(userId)
     .then(events => res.json(events))
     .catch(err => res.status(500).json({ error: 'Failed to fetch signups', detail: err.message }));
@@ -38,28 +37,28 @@ router.get('/users/:userId/signups', (req, res) => {
 router.delete('/users/:userId/signups/:eventId', (req, res) => {
   const userId = parseInt(req.params.userId, 10);
   const eventId = parseInt(req.params.eventId, 10);
-
   deleteSignup(userId, eventId)
     .then(() => res.json({ message: 'Signup removed successfully' }))
     .catch(err => res.status(500).json({ error: 'Failed to remove signup', detail: err.message }));
 });
 
-router.post('/events/:id/signup', (req: Request, res: Response) => {
+router.get('/staff/events', (req, res) => {
+  getStaffEvents()
+    .then(events => res.json(events))
+    .catch(err => res.status(500).json({ error: 'Failed to fetch staff events', detail: err.message }));
+});
+
+router.post('/:id/signup', (req: Request, res: Response) => {
   const eventId = parseInt(req.params.id, 10);
   const userId = (req.session as any).userId; 
-
   if (!userId) {
     return res.status(401).json({ error: 'You must be logged in to sign up for an event.' });
   }
 
   signUpForEvent(userId, eventId)
-    .then(() => {
-      return getEventById(eventId);
-    })
+    .then(() => getEventById(eventId))
     .then(event => {
-      if (!event) {
-        return res.status(404).json({ error: 'Event not found' });
-      }
+      if (!event) return res.status(404).json({ error: 'Event not found' });
       res.json({
         message: 'Signed up successfully',
         event: {
@@ -71,21 +70,22 @@ router.post('/events/:id/signup', (req: Request, res: Response) => {
         }
       });
     })
-    .catch(err => {
-      res.status(400).json({ error: err.message || 'Failed to sign up for event' });
-    });
+    .catch(err => res.status(400).json({ error: err.message || 'Failed to sign up for event' }));
 });
 
-router.get('/staff/events', (req, res) => {
-  getStaffEvents()
-    .then(events => res.json(events))
-    .catch(err => res.status(500).json({ error: 'Failed to fetch staff events', detail: err.message }));
+router.get('/:id', (req, res) => {
+  const eventId = parseInt(req.params.id, 10);
+  getEventById(eventId)
+    .then(event => {
+      if (!event) return res.status(404).json({ error: 'Event not found' });
+      res.json(event);
+    })
+    .catch(err => res.status(500).json({ error: 'Database error', detail: err.message }));
 });
 
-router.put('/events/:id', isStaff, (req, res) => {
+router.put('/:id', isStaff, (req, res) => {
   const eventId = parseInt(req.params.id, 10);
   const { title, description, start_time, end_time } = req.body;
-
   updateEvent(eventId, title, description, start_time, end_time)
     .then(updatedEvent => {
       if (!updatedEvent) return res.status(404).json({ error: 'Event not found' });
@@ -94,7 +94,7 @@ router.put('/events/:id', isStaff, (req, res) => {
     .catch(err => res.status(500).json({ error: 'Failed to update event', detail: err.message }));
 });
 
-router.delete('/events/:id', isStaff, (req, res) => {
+router.delete('/:id', isStaff, (req, res) => {
   const id = Number(req.params.id);
   deleteEventById(id)
     .then(() => res.status(200).json({ message: `Event ${id} deleted` }))
