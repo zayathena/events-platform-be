@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/listen.js",
   "scripts": {
-  "dev": "ts-node-dev --respawn --transpile-only src/listen.ts",
+  "dev": "ts-node-dev --respawn --transpile-only dist/listen.ts",
   "build": "tsc",
   "start": "node dist/listen.js",
   "seed": "ts-node src/config/db/seed.ts",
