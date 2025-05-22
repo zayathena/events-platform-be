@@ -5,7 +5,7 @@ import PgSession from 'connect-pg-simple';
 import dotenv from 'dotenv';
 import ticketmasterRouter from './routes/ticketmasterRoutes';
 import calendarRoutes from './routes/calendarRoutes';
-import eventRoutes from '../src/routes/eventRoutes';
+import eventRoutes from './routes/eventRoutes';
 
 dotenv.config();
 
