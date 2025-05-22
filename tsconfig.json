@@ -2,6 +2,8 @@
   "compilerOptions": {
     "target": "es2016",
     "module": "commonjs",
+    "rootDir": "src",
+    "outDir": "dist",
     "typeRoots": ["./src/types", "./node_modules/@types"],
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
