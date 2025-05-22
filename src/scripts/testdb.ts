@@ -1,4 +1,4 @@
-import pool from '../config/db';
+import pool from '../config/db/db';
 
 pool.query('SELECT NOW()')
   .then(res => {

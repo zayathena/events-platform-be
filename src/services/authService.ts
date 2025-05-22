@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import db from '../config/db';
+import db from '../config/db/db';
 
 export function hashPassword(password: string): Promise<string> {
   return bcrypt.hash(password, 10); 

@@ -1,4 +1,4 @@
-import db from '../config/db'
+import db from '../config/db/db'
 import { QueryResult } from 'pg';
 
 export function getAllEvents() {

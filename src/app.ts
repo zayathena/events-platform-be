@@ -1,6 +1,6 @@
 import express from 'express';
 import session from 'express-session';
-import db from './config/db';
+import db from './config/db/db';
 import PgSession from 'connect-pg-simple';
 import dotenv from 'dotenv';
 import ticketmasterRouter from './routes/ticketmasterRoutes';
