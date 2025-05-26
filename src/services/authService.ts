@@ -17,3 +17,12 @@ export function createUser(email: string, password: string, role: string) {
     ).then(res => res.rows[0]);
   });
 }
+
+export function findUserByEmail(email: string) {
+  return db.query('SELECT * FROM users WHERE email = $1', [email])
+    .then(res => res.rows[0] || null);
+}
+
+export function verifyPassword(inputPassword: string, hashedPassword: string) {
+  return bcrypt.compare(inputPassword, hashedPassword);
+}
