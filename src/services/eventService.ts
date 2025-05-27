@@ -6,3 +6,10 @@ export function signUpForExternalEvent(userId: number, ticketmasterEventId: stri
     [userId, ticketmasterEventId]
   ).then(() => {});
 }
+
+export function createEventInDb(title: string, description: string, start: string, end: string, createdBy: number) {
+  return db.query(
+    'INSERT INTO events (title, description, start_time, end_time, created_by) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+    [title, description, start, end, createdBy]
+  ).then(res => res.rows[0]);
+}
