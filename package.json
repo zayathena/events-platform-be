@@ -4,14 +4,14 @@
   "description": "",
   "main": "dist/listen.js",
   "scripts": {
-  "dev": "ts-node-dev --respawn --transpile-only src/listen.ts",
-  "build": "tsc",
-  "postinstall": "yarn build",
-  "start": "node dist/listen.js",
-  "seed": "ts-node src/config/db/seed.ts",
-  "seed-prod": "NODE_ENV=production npm run seed",
-  "test": "echo \"Error: no test specified\" && exit 1"
-},
+    "dev": "ts-node-dev --respawn --transpile-only src/listen.ts",
+    "build": "tsc",
+    "postinstall": "yarn build",
+    "start": "node dist/listen.js",
+    "seed": "ts-node src/config/db/seed.ts",
+    "seed-prod": "NODE_ENV=production npm run seed",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/zayathena/events-platform-be.git"
@@ -27,6 +27,7 @@
     "axios": "^1.9.0",
     "bcrypt": "^6.0.0",
     "connect-pg-simple": "^10.0.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
@@ -36,6 +37,7 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.18",
     "@types/express": "^4.17.17",
     "@types/express-session": "^1.18.1",
     "@types/node": "^22.15.18",

@@ -1,5 +1,6 @@
 import express from 'express';
 import session from 'express-session';
+import cors from 'cors';
 import db from './config/db/db';
 import PgSession from 'connect-pg-simple';
 import dotenv from 'dotenv';
@@ -13,6 +14,11 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
+
+app.use(cors({
+  origin: 'http://localhost:3000', 
+  credentials: true               
+}));
 
 const pgSessionStore = new PgSession({
   pool: db,
