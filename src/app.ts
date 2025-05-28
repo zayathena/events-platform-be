@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import ticketmasterRouter from './routes/ticketmasterRoutes';
 import calendarRoutes from './routes/calendarRoutes';
 import eventRoutes from './routes/eventRoutes';
+import authRoutes from './routes/authRoutes';
 
 dotenv.config();
 
@@ -43,6 +44,7 @@ app.use(
 app.use('/api/ticketmaster', ticketmasterRouter);
 app.use('/api/calendar', calendarRoutes);
 app.use('/api/events', eventRoutes);
+app.use('api/auth', authRoutes);
 
 app.use((req, res) => {
   res.status(404).send(`Cannot ${req.method} ${req.originalUrl}`);
