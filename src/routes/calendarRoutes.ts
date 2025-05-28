@@ -4,6 +4,10 @@ import { getEventById } from '../services/eventService';
 
 const router = express.Router();
 
+router.get('/', (req, res) => {
+  res.send('Calendar routes work');
+});
+
 router.get('/google-auth', (req: Request, res: Response) => {
   const url = getAuthUrl();
   res.redirect(url);

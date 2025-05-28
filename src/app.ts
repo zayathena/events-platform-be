@@ -12,7 +12,6 @@ import authRoutes from './routes/authRoutes';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
 
 const PgSession = connectPgSimple(session);
 
@@ -40,6 +39,10 @@ app.use(
     },
   })
 );
+
+app.get('/ping', (_req, res) => {
+  res.send('pong');
+});
 
 app.use('/api/ticketmaster', ticketmasterRouter);
 app.use('/api/calendar', calendarRoutes);

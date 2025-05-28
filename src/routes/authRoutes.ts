@@ -4,6 +4,10 @@ import { findUserByEmail, verifyPassword } from '../services/authService';
 
 const router = express.Router(); 
 
+router.get('/', (req, res) => {
+  res.send('Auth routes work');
+});
+
 router.post('/register', (req: Request, res: Response) => {
   const { email, password, role } = req.body;
 

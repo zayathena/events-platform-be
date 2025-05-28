@@ -6,6 +6,10 @@ dotenv.config();
 
 const router = express.Router();
 
+router.get('/', (req, res) => {
+  res.send('Ticketmaster root route works');
+});
+
 router.get('/events', (req, res) => {
   const apiKey = process.env.TICKETMASTER_API_KEY;
   const city = 'Liverpool';

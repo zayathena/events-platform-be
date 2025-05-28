@@ -3,6 +3,10 @@ import { signUpForExternalEvent, createEventInDb } from '../services/eventServic
 
 const router = express.Router();
 
+router.get('/', (req, res) => {
+  res.send('Events root route works');
+});
+
 router.post('/:id/signup', (req: Request, res: Response) => {
   const eventId = req.params.id; 
   const userId = (req.session as any).userId;
