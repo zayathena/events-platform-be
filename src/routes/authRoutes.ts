@@ -10,7 +10,7 @@ router.post('/register', (req: Request, res: Response) => {
   createUser(email, password, role)
     .then(user => res.status(201).json({ message: 'User created', user }))
     .catch(err => {
-      console.error(err);
+      console.error('Registration error:', err);
       res.status(500).json({ error: 'Registration failed' });
     });
 });

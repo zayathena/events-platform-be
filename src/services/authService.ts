@@ -12,7 +12,7 @@ export function comparePassword(password: string, hash: string): Promise<boolean
 export function createUser(email: string, password: string, role: string) {
   return hashPassword(password).then(hashed => {
     return db.query(
-      'INSERT INTO users (email, password, role) VALUES ($1, $2, $3) RETURNING *',
+      'INSERT INTO users (email, password_hash, role) VALUES ($1, $2, $3) RETURNING *',
       [email, hashed, role]
     ).then(res => res.rows[0]);
   });
