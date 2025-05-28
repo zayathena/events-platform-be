@@ -13,3 +13,10 @@ export function createEventInDb(title: string, description: string, start: strin
     [title, description, start, end, createdBy]
   ).then(res => res.rows[0]);
 }
+
+export function getEventById(eventId: number) {
+  return db.query(
+    'SELECT * FROM events WHERE id = $1',
+    [eventId]
+  ).then(res => res.rows[0]);
+}
