@@ -30,6 +30,7 @@ router.post('/:id/signup', (req: Request, res: Response) => {
 
 router.post('/', (req: Request, res: Response) => {
   const user = (req.session as any).user;
+  console.log('Session user in /api/events POST:', user);
 
   if (!user || user.role !== 'staff') {
     return res.status(403).json({ error: 'Only staff can create events.' });

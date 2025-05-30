@@ -15,12 +15,12 @@ const app = express();
 
 const PgSession = connectPgSimple(session);
 
+app.use(express.json());
+
 app.use(cors({
   origin: 'http://localhost:3000',
   credentials: true,
 }));
-
-app.use(express.json());
 
 app.use(
   session({
@@ -40,14 +40,16 @@ app.use(
   })
 );
 
-app.get('/ping', (_req, res) => {
+app.get('/ping', (req, res) => {
   res.send('pong');
 });
+console.log('Added /ping route');
 
 app.use('/api/ticketmaster', ticketmasterRouter);
 app.use('/api/calendar', calendarRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/auth', authRoutes);
+console.log('Added API routes');
 
 app.use((req, res) => {
   res.status(404).send(`Cannot ${req.method} ${req.originalUrl}`);

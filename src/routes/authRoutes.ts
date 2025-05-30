@@ -21,20 +21,29 @@ router.post('/register', (req: Request, res: Response) => {
 
 router.post('/login', (req: Request, res: Response) => {
   const { email, password } = req.body;
+  console.log(`Login attempt for: ${email}`);
 
   findUserByEmail(email)
     .then((user: any) => {
       if (!user) {
+        console.log('User not found');
         return res.status(401).json({ error: 'Invalid email or password' });
       }
 
-      return verifyPassword(password, user.password)
+       console.log('User found:', user);
+
+      return verifyPassword(password, user.password_hash)
         .then(isValid => {
+          console.log('Password valid?', isValid);
           if (!isValid) {
             return res.status(401).json({ error: 'Invalid email or password' });
           }
 
-          (req.session as any).userId = user.id;
+         (req.session as any).user = {
+            id: user.id,
+            email: user.email,
+            role: user.role,
+          };
 
           res.json({
             message: 'Login successful',

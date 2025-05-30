@@ -20,3 +20,8 @@ export function getEventById(eventId: number) {
     [eventId]
   ).then(res => res.rows[0]);
 }
+
+export function getAllEvents() {
+  return db.query('SELECT id, title, description, start_time, end_time FROM events ORDER BY start_time ASC')
+    .then(res => res.rows);
+}
