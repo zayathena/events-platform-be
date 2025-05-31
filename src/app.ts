@@ -8,6 +8,7 @@ import ticketmasterRouter from './routes/ticketmasterRoutes';
 import calendarRoutes from './routes/calendarRoutes';
 import eventRoutes from './routes/eventRoutes';
 import authRoutes from './routes/authRoutes';
+import path from 'path';
 
 dotenv.config();
 
@@ -40,19 +41,20 @@ app.use(
   })
 );
 
-app.get('/ping', (req, res) => {
-  res.send('pong');
-});
-console.log('Added /ping route');
-
 app.use('/api/ticketmaster', ticketmasterRouter);
 app.use('/api/calendar', calendarRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/auth', authRoutes);
 console.log('Added API routes');
 
-app.use((req, res) => {
-  res.status(404).send(`Cannot ${req.method} ${req.originalUrl}`);
+app.use(express.static(path.join(__dirname, 'build')));
+
+app.get('*', (req, res) => {
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  } else {
+    res.status(404).send(`Cannot ${req.method} ${req.originalUrl}`);
+  }
 });
 
 export default app;

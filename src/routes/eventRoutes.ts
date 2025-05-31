@@ -1,10 +1,32 @@
 import express, { Request, Response } from 'express';
-import { signUpForExternalEvent, createEventInDb } from '../services/eventService';
+import { signUpForExternalEvent, createEventInDb, getAllEvents, deleteEvent, getEventById } from '../services/eventService';
+import { isStaff } from '../middleware/authMiddleware'
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  res.send('Events root route works');
+router.get('/', (req: Request, res: Response) => {
+  getAllEvents()
+    .then(events => res.json(events))
+    .catch(error => {
+      console.error('Failed to get events:', error);
+      res.status(500).json({ error: 'Failed to fetch events' });
+    });
+});
+
+router.get('/:id', (req: Request, res: Response) => {
+  const eventId = Number(req.params.id);
+
+  getEventById(eventId)
+    .then(event => {
+      if (!event) {
+        return res.status(404).json({ error: 'Event not found' });
+      }
+      res.json(event);
+    })
+    .catch(error => {
+      console.error('Error fetching event:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    });
 });
 
 router.post('/:id/signup', (req: Request, res: Response) => {
@@ -36,11 +58,23 @@ router.post('/', (req: Request, res: Response) => {
     return res.status(403).json({ error: 'Only staff can create events.' });
   }
 
-  const { title, description, start_time, end_time } = req.body;
+  const { title, description, start_time, end_time, image_url } = req.body;
 
-  createEventInDb(title, description, start_time, end_time, user.id)
+  createEventInDb(title, description, start_time, end_time, image_url, user.id)
     .then(event => res.status(201).json(event))
     .catch(err => res.status(400).json({ error: err.message }));
+});
+
+router.delete('/:id', isStaff, (req, res) => {
+  const eventId = Number(req.params.id);
+
+  deleteEvent(eventId)
+    .then(() => {
+      res.sendStatus(204);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: 'Failed to delete event' });
+    });
 });
 
 export default router;

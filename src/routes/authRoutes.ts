@@ -26,7 +26,6 @@ router.post('/login', (req: Request, res: Response) => {
   findUserByEmail(email)
     .then((user: any) => {
       if (!user) {
-        console.log('User not found');
         return res.status(401).json({ error: 'Invalid email or password' });
       }
 
@@ -59,6 +58,18 @@ router.post('/login', (req: Request, res: Response) => {
       console.error(err);
       res.status(500).json({ error: 'Login failed' });
     });
+});
+
+router.get('/me', (req, res) => {
+  const user = (req.session as any).user;
+  if (!user) {
+    return res.status(401).json({ error: 'Not authenticated' });
+  }
+  res.json({
+    id: user.id,
+    username: user.username,
+    role: user.role,
+  });
 });
 
 export default router;
