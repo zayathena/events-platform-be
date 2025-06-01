@@ -25,3 +25,8 @@ export function getAllEvents() {
   return db.query('SELECT id, title, description, start_time, end_time, image_url FROM events ORDER BY start_time ASC')
     .then(res => res.rows);
 }
+
+export function deleteEvent(eventId: number) {
+  return db.query('DELETE FROM events WHERE id = $1', [eventId])
+  .then(() => {});
+}

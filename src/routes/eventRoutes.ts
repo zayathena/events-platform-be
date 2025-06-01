@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { signUpForExternalEvent, createEventInDb, getAllEvents, deleteEvent, getEventById } from '../services/eventService';
-import { isStaff } from '../middleware/authMiddleware'
+import { isStaff, requireLogin } from '../middleware/authMiddleware'
 
 const router = express.Router();
 
@@ -29,13 +29,9 @@ router.get('/:id', (req: Request, res: Response) => {
     });
 });
 
-router.post('/:id/signup', (req: Request, res: Response) => {
-  const eventId = req.params.id; 
-  const userId = (req.session as any).userId;
-
-  if (!userId) {
-    return res.status(401).json({ error: 'You must be logged in to sign up for an event.' });
-  }
+router.post('/:id/signup', requireLogin, (req: any, res: any) => {
+  const eventId = req.params.id;
+  const userId = req.session.user.id;
 
   signUpForExternalEvent(userId, eventId)
     .then(() => {
@@ -73,6 +69,7 @@ router.delete('/:id', isStaff, (req, res) => {
       res.sendStatus(204);
     })
     .catch((err) => {
+      console.error('Delete event error:', err);
       res.status(500).json({ error: 'Failed to delete event' });
     });
 });

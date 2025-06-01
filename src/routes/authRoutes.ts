@@ -44,6 +44,8 @@ router.post('/login', (req: Request, res: Response) => {
             role: user.role,
           };
 
+           (req.session as any).userId = user.id;
+
           res.json({
             message: 'Login successful',
             user: {
@@ -67,7 +69,7 @@ router.get('/me', (req, res) => {
   }
   res.json({
     id: user.id,
-    username: user.username,
+    email: user.email,
     role: user.role,
   });
 });

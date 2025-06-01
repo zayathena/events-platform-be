@@ -1,6 +1,8 @@
 import express from 'express';
 import session from 'express-session';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import csurf from 'csurf';
 import db from './config/db/db';
 const connectPgSimple = require('connect-pg-simple'); 
 import dotenv from 'dotenv';
@@ -17,6 +19,11 @@ const app = express();
 const PgSession = connectPgSimple(session);
 
 app.use(express.json());
+app.use(cookieParser());
+
+app.get('/api/csrf-token', (req, res) => {
+  res.json({ csrfToken: req.csrfToken() });
+});
 
 app.use(cors({
   origin: 'http://localhost:3000',
@@ -25,6 +32,7 @@ app.use(cors({
 
 app.use(
   session({
+    name: 'connect.sid',
     store: new PgSession({
       pool: db,
       tableName: 'user_sessions',
@@ -36,6 +44,7 @@ app.use(
     cookie: {
       secure: process.env.NODE_ENV === 'production',
       httpOnly: true,
+      sameSite: 'lax',
       maxAge: 1000 * 60 * 60 * 24, 
     },
   })

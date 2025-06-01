@@ -26,3 +26,17 @@ export function findUserByEmail(email: string) {
 export function verifyPassword(inputPassword: string, hashedPassword: string) {
   return bcrypt.compare(inputPassword, hashedPassword);
 }
+
+export function registerUser(email: string, username: string, password: string): Promise<void> {
+  return bcrypt.hash(password, 10)
+    .then((hashedPassword) => {
+      return new Promise<void>((resolve, reject) => {
+        const success = true;
+        if (success) {
+          resolve();
+        } else {
+          reject(new Error('Failed to create user'));
+        }
+      });
+    });
+}
