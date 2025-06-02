@@ -46,7 +46,7 @@ const sessionMiddleware = session({
   },
 });
 
-app.use(sessionMiddleware as express.RequestHandler);
+app.use(sessionMiddleware as unknown as express.RequestHandler);
 
 app.use('/api/ticketmaster', ticketmasterRouter);
 app.use('/api/calendar', calendarRoutes);
