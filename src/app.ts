@@ -28,30 +28,31 @@ app.use(
   })
 );
 
-app.use(
-  session({
-    name: 'connect.sid',
-    store: new PgSession({
-      pool: db,
-      tableName: 'user_sessions',
-      createTableIfMissing: true,
-    }),
-    secret: process.env.SESSION_SECRET || 'super-secret-session-key',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: process.env.NODE_ENV === 'production',
-      httpOnly: true,
-      sameSite: 'lax',
-      maxAge: 1000 * 60 * 60 * 24, 
-    },
-  })
-);
+const sessionMiddleware = session({
+  name: 'connect.sid',
+  store: new PgSession({
+    pool: db,
+    tableName: 'user_sessions',
+    createTableIfMissing: true,
+  }),
+  secret: process.env.SESSION_SECRET || 'super-secret-session-key',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
+    sameSite: 'lax',
+    maxAge: 1000 * 60 * 60 * 24,
+  },
+});
+
+app.use(sessionMiddleware as express.RequestHandler);
 
 app.use('/api/ticketmaster', ticketmasterRouter);
 app.use('/api/calendar', calendarRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/auth', authRoutes);
+
 console.log('Added API routes');
 
 app.use(express.static(path.join(__dirname, 'build')));
