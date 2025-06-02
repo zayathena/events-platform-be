@@ -3,27 +3,30 @@ import session from 'express-session';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import db from './config/db/db';
-const connectPgSimple = require('connect-pg-simple'); 
 import dotenv from 'dotenv';
+import path from 'path';
+
 import ticketmasterRouter from './routes/ticketmasterRoutes';
 import calendarRoutes from './routes/calendarRoutes';
 import eventRoutes from './routes/eventRoutes';
 import authRoutes from './routes/authRoutes';
-import path from 'path';
 
 dotenv.config();
 
 const app: Application = express();
 
+const connectPgSimple = require('connect-pg-simple');
 const PgSession = connectPgSimple(session);
 
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+  })
+);
 
 app.use(
   session({
