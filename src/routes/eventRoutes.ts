@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { signUpForExternalEvent, createEventInDb, getAllEvents, deleteEvent, getEventById } from '../services/eventService';
+import { signUpForExternalEvent, createEventInDb, getAllEvents, getEventById, deleteEvent } from '../services/eventService';
 import { isStaff, requireLogin } from '../middleware/authMiddleware'
 
 const router = express.Router();
