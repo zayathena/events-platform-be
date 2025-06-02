@@ -1,4 +1,4 @@
-import { Pool } from 'pg';
+import { Pool, PoolConfig } from 'pg';
 
 const ENV = process.env.NODE_ENV || 'development';
 
@@ -6,7 +6,7 @@ if (!process.env.PGDATABASE && !process.env.DATABASE_URL) {
   throw new Error('PGDATABASE or DATABASE_URL must be set');
 }
 
-const config: any = {};
+const config: PoolConfig = {};
 
 if (ENV === 'production') {
   config.connectionString = process.env.DATABASE_URL;
@@ -15,4 +15,4 @@ if (ENV === 'production') {
 
 const pool = new Pool(config);
 
-export default pool; 
+export default pool;
