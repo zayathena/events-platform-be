@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Application, Request, Response } from 'express';
 import session from 'express-session';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
@@ -13,7 +13,7 @@ import path from 'path';
 
 dotenv.config();
 
-const app = express();
+const app: Application = express();
 
 const PgSession = connectPgSimple(session);
 
@@ -53,7 +53,7 @@ console.log('Added API routes');
 
 app.use(express.static(path.join(__dirname, 'build')));
 
-app.get('*', (req, res) => {
+app.get('*', (req: Request, res: Response) => {
   if (!req.path.startsWith('/api')) {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
   } else {
