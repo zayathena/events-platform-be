@@ -2,7 +2,6 @@ import express from 'express';
 import session from 'express-session';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import csurf from 'csurf';
 import db from './config/db/db';
 const connectPgSimple = require('connect-pg-simple'); 
 import dotenv from 'dotenv';
@@ -20,10 +19,6 @@ const PgSession = connectPgSimple(session);
 
 app.use(express.json());
 app.use(cookieParser());
-
-app.get('/api/csrf-token', (req, res) => {
-  res.json({ csrfToken: req.csrfToken() });
-});
 
 app.use(cors({
   origin: 'http://localhost:3000',
