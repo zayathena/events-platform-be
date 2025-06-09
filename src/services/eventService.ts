@@ -7,6 +7,13 @@ export function signUpForExternalEvent(userId: number, ticketmasterEventId: stri
   ).then(() => {});
 }
 
+export function signUpForCustomEvent(userId: number, eventId: number): Promise<void> {
+  return db.query(
+    'INSERT INTO user_events (user_id, event_id) VALUES ($1, $2) ON CONFLICT DO NOTHING',
+    [userId, eventId]
+  ).then(() => {});
+}
+
 export function createEventInDb(title: string, description: string, start: string, end: string, image_url: string, createdBy: number) {
   return db.query(
     'INSERT INTO events (title, description, start_time, end_time, image_url, created_by) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',

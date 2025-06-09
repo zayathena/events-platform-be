@@ -5,11 +5,11 @@ import cookieParser from 'cookie-parser';
 import db from './config/db/db';
 import dotenv from 'dotenv';
 import path from 'path';
-
 import ticketmasterRouter from './routes/ticketmasterRoutes';
 import calendarRoutes from './routes/calendarRoutes';
 import eventRoutes from './routes/eventRoutes';
 import authRoutes from './routes/authRoutes';
+import userRoutes from './routes/userRoutes';
 
 dotenv.config();
 
@@ -52,6 +52,7 @@ app.use('/api/ticketmaster', ticketmasterRouter);
 app.use('/api/calendar', calendarRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 
 console.log('Added API routes');
 
