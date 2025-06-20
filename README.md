@@ -1,5 +1,5 @@
 # Launchpad Project
-# Events Platform
+# Events Platform Backend
 
 ## 📋 Project Overview
 

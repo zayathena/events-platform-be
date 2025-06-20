@@ -5,7 +5,7 @@
   "main": "dist/listen.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/listen.ts",
-    "build": "tsc",
+    "build": "cd ../events-platform-fe && yarn install && yarn build && cp -r build ../dist/build && cd ../ && tsc",
     "postinstall": "yarn build",
     "start": "node dist/listen.js",
     "seed": "ts-node src/config/db/seed.ts",
