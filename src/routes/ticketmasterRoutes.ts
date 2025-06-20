@@ -7,7 +7,7 @@ dotenv.config();
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  res.send('Ticketmaster root route works');
+  res.send('Ticketmaster route works');
 });
 
 router.get('/events', (req, res) => {
