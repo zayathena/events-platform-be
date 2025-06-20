@@ -60,7 +60,7 @@ app.use(express.static(path.join(__dirname, 'build')));
 
 app.get('*', (req: Request, res: Response) => {
   if (!req.path.startsWith('/api')) {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    res.sendFile(path.join(__dirname, 'dist', 'build', 'index.html'));
   } else {
     res.status(404).send(`Cannot ${req.method} ${req.originalUrl}`);
   }
