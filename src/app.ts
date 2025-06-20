@@ -23,7 +23,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: 'https://shimmering-phoenix-1ab6c9.netlify.app',
     credentials: true,
   })
 );
@@ -54,16 +54,14 @@ app.use('/api/events', eventRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 
-console.log('Added API routes');
+// app.use(express.static(path.join(__dirname, 'build')));
 
-app.use(express.static(path.join(__dirname, 'build')));
-
-app.get('*', (req: Request, res: Response) => {
-  if (!req.path.startsWith('/api')) {
-    res.sendFile(path.join(__dirname, 'dist', 'build', 'index.html'));
-  } else {
-    res.status(404).send(`Cannot ${req.method} ${req.originalUrl}`);
-  }
-});
+// app.get('*', (req: Request, res: Response) => {
+//   if (!req.path.startsWith('/api')) {
+//     res.sendFile(path.join(__dirname, 'build', 'index.html'));
+//   } else {
+//     res.status(404).send(`Cannot ${req.method} ${req.originalUrl}`);
+//   }
+// });
 
 export default app;
