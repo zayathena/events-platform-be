@@ -48,6 +48,19 @@ const sessionMiddleware = session({
 
 app.use(sessionMiddleware as unknown as express.RequestHandler);
 
+app.get('/api', (req, res) => {
+  res.json({
+    message: 'API routes available',
+    routes: [
+      '/api/auth',
+      '/api/events',
+      '/api/users',
+      '/api/ticketmaster',
+      '/api/calendar',
+    ],
+  });
+});
+
 app.use('/api/ticketmaster', ticketmasterRouter);
 app.use('/api/calendar', calendarRoutes);
 app.use('/api/events', eventRoutes);
