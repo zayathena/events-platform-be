@@ -15,6 +15,8 @@ dotenv.config();
 
 const app: Application = express();
 
+app.set('trust proxy', 1);
+
 const connectPgSimple = require('connect-pg-simple');
 const PgSession = connectPgSimple(session);
 
@@ -39,11 +41,11 @@ const sessionMiddleware = session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: true,         
-    sameSite: 'none',       
-    httpOnly: true,
-    maxAge: 1000 * 60 * 60 * 24,
-  },
+  secure: process.env.NODE_ENV === 'production', 
+  sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+  httpOnly: true,
+  maxAge: 1000 * 60 * 60 * 24,
+},
 });
 
 app.use(sessionMiddleware as unknown as express.RequestHandler);
