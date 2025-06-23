@@ -29,7 +29,7 @@ router.post('/login', (req: Request, res: Response) => {
         return res.status(401).json({ error: 'Invalid email or password' });
       }
 
-       console.log('User found:', user);
+      console.log('User found:', user);
 
       return verifyPassword(password, user.password_hash)
         .then(isValid => {
@@ -38,21 +38,27 @@ router.post('/login', (req: Request, res: Response) => {
             return res.status(401).json({ error: 'Invalid email or password' });
           }
 
-         (req.session as any).user = {
+          (req.session as any).user = {
             id: user.id,
             email: user.email,
             role: user.role,
           };
+          (req.session as any).userId = user.id;
 
-           (req.session as any).userId = user.id;
-
-          res.json({
-            message: 'Login successful',
-            user: {
-              id: user.id,
-              email: user.email,
-              role: user.role
+          req.session.save((err: any) => {
+            if (err) {
+              console.error('Session save error:', err);
+              return res.status(500).json({ error: 'Session failed to save' });
             }
+
+            res.json({
+              message: 'Login successful',
+              user: {
+                id: user.id,
+                email: user.email,
+                role: user.role
+              }
+            });
           });
         });
     })
