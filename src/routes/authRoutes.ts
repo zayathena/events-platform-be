@@ -62,10 +62,11 @@ router.post('/login', (req: Request, res: Response) => {
     });
 });
 
-router.get('/me', (req, res) => {
+router.get('/me', (req: Request, res: Response): void => {
   const user = (req.session as any).user;
   if (!user) {
-    return res.status(401).json({ error: 'Not authenticated' });
+    res.status(401).json({ error: 'Not authenticated' });
+    return;
   }
   res.json({
     id: user.id,

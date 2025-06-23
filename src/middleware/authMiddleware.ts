@@ -1,28 +1,37 @@
 import { Request, Response, NextFunction } from 'express';
 
-export function requireLogin(req: Request, res: Response, next: NextFunction) {
+export function requireLogin(req: Request, res: Response, next: NextFunction
+): void {
   if (!req.session || !req.session.user || !req.session.user.id) {
-    return res.status(401).json({ error: 'Not logged in' });
+    res.status(401).json({ error: 'Not logged in' });
+    return; 
   }
   next();
 }
 
-export function isStaff(req: Request, res: Response, next: NextFunction) {
+export function isStaff(req: Request, res: Response, next: NextFunction
+): void {
   if (!req.session || !req.session.user) {
-    return res.status(401).json({ error: 'Unauthorized' });
+    res.status(401).json({ error: 'Unauthorized' });
+    return;
   }
 
   if (req.session.user.role !== 'staff') {
-    return res.status(403).json({ error: 'Forbidden: Staff only' });
+    res.status(403).json({ error: 'Forbidden: Staff only' });
+    return;
   }
 
-  return next();
+  next();
 }
 
-export function isAuthenticated(req: Request, res: Response, next: NextFunction) {
+export function isAuthenticated(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void {
   if (req.session && req.session.user) {
-    return next();
+    next();
+    return;
   }
-
-  return res.status(401).json({ message: 'Unauthorized' });
+  res.status(401).json({ message: 'Unauthorized' });
 }

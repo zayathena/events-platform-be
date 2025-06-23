@@ -30,7 +30,7 @@ router.get('/:id', (req: Request, res: Response) => {
     });
 });
 
-router.post('/:id/signup', requireLogin, (req: any, res: any) => {
+router.post('/:id/signup', requireLogin, (req: any, res: any): void => {
   const eventIdParam = req.params.id;
   const userId = req.session.user.id;
 
@@ -42,7 +42,8 @@ router.post('/:id/signup', requireLogin, (req: any, res: any) => {
     db.query('SELECT id FROM events WHERE id = $1', [eventId])
       .then(result => {
         if (result.rows.length === 0) {
-          throw new Error('Custom event not found');
+        res.status(404).json({ error: 'Custom event not found' });
+          return;
         }
         return db.query(
           'INSERT INTO user_events (user_id, event_id) VALUES ($1, $2) ON CONFLICT DO NOTHING',
@@ -71,12 +72,13 @@ router.post('/:id/signup', requireLogin, (req: any, res: any) => {
   }
 });
 
-router.post('/', (req: Request, res: Response) => {
+router.post('/', (req: Request, res: Response): void => {
   const user = (req.session as any).user;
   console.log('Session user in /api/events POST:', user);
 
   if (!user || user.role !== 'staff') {
-    return res.status(403).json({ error: 'Only staff can create events.' });
+    res.status(403).json({ error: 'Only staff can create events.' });
+    return;
   }
 
   const { title, description, start_time, end_time, image_url } = req.body;
@@ -86,7 +88,7 @@ router.post('/', (req: Request, res: Response) => {
     .catch(err => res.status(400).json({ error: err.message }));
 });
 
-router.delete('/:id', isStaff, (req, res) => {
+router.delete('/:id', isStaff, (req: Request, res: Response): void => {
   const eventId = Number(req.params.id);
 
   deleteEvent(eventId)
