@@ -29,9 +29,10 @@ router.get('/oauth2callback', (req: Request, res: Response) => {
     });
 });
 
-router.post('/add-event', (req: Request, res: Response) => {
+router.post('/add-event', (req: Request, res: Response): void => {
   if (!req.session || !req.session.tokens) {
-    return res.status(401).json({ error: 'User not authenticated with Google' });
+    res.status(401).json({ error: 'User not authenticated with Google' });
+    return;
   }
 
   const { eventData } = req.body;
