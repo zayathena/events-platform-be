@@ -80,19 +80,19 @@ git clone https://github.com/zayathena/events-platform-be/
 2. **Install Dependencies**
 
 - npm install
-  # or if you prefer yarn:
-  # yarn install
+  or if you prefer yarn:
+  yarn install
 
 3. **Set Up Environment Variables**
 
 Create a .env file at the root of the project with the following keys. Adjust values as needed:
-
+```
 SESSION_SECRET=your-secret-key
 DATABASE_URL=postgresql://user:password@localhost:5432/your_database
 NODE_ENV=development
 TICKETMASTER_API_KEY=your-ticketmaster-api-key
 REACT_APP_API_BASE_URL=http://localhost:3000
-
+```
 4. **Set Up the Database**
 
 Create the Database: Ensure your PostgreSQL server is running, then create your database if it does not exist:
@@ -108,7 +108,7 @@ npm run dev
 The server will typically be available at http://localhost:3000 (unless you have changed the port in your configuration).
 
 ## 📁 Project Structure
-
+```
 src/
 ├── config/            # Database configuration and seed scripts
 ├── controllers/       # Express controllers (handling HTTP requests)
@@ -118,7 +118,7 @@ src/
 ├── utils/             # Utility functions and helpers
 ├── app.ts             # Main Express app configuration
 ├── listen.ts          # Entry point to start the server
-
+```
 ## 🌍 Deployment
 
 ### Deploying on render
@@ -139,7 +139,7 @@ yarn start
 
 - Ensure your Render PostgreSQL instance is connected (the session table will be auto-created using createTableIfMissing: true).
 
-For detailed instructions, see the Render Deployment Guide for Node.js.
+- For detailed instructions, see the Render Deployment Guide for Node.js.
 
 ## ℹ️ Additional Notes
 
